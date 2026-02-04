@@ -142,120 +142,6 @@ body {
   transform: scale(1.1);
 }
 
-/* Ancien intro livre (conservé pour référence) */
-.book-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #e8dce8 0%, #f0e6f0 50%, #e8dce8 100%);
-  perspective: 1200px;
-  perspective-origin: center center;
-  overflow: visible;
-}
-
-.book-cover {
-  position: absolute;
-  width: 420px;
-  height: 300px;
-  display: flex;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.book-cover-left,
-.book-cover-right {
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(135deg, #C3B7E2 0%, #D8A7B1 50%, #C3B7E2 100%);
-  box-shadow: 
-    inset 0 0 30px rgba(255, 255, 255, 0.3),
-    0 10px 40px rgba(0, 0, 0, 0.2);
-  transition: transform 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-  backface-visibility: hidden;
-}
-
-.book-cover-left {
-  transform-origin: right center;
-  transform: rotateY(-95deg); /* Fermé : pliée derrière */
-  border-radius: 4px 0 0 4px;
-}
-
-.book-cover-right {
-  transform-origin: left center;
-  transform: rotateY(0deg);
-  border-radius: 0 4px 4px 0;
-  background: linear-gradient(225deg, #C3B7E2 0%, #D8A7B1 50%, #C3B7E2 100%);
-}
-
-.book-cover-spine {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 8px;
-  background: linear-gradient(90deg, #9a8bb5, #b89aa8);
-  transform: translateX(-50%);
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-  z-index: -1;
-}
-
-/* Livre fermé au départ → s'ouvre au clic : couvertures pivotent vers l'extérieur */
-.book-intro-opening .book-cover-left {
-  transform: rotateY(-80deg) !important;
-}
-
-.book-intro-opening .book-cover-right {
-  transform: rotateY(80deg) !important;
-}
-
-.book-intro-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  padding: 40px;
-}
-
-.book-intro-title {
-  font-family: var(--font-title);
-  font-size: 1.8rem;
-  letter-spacing: 0.2em;
-  color: var(--text);
-  margin: 0 0 8px;
-}
-
-.book-intro-subtitle {
-  font-size: 1rem;
-  color: var(--muted);
-  margin: 0 0 24px;
-  letter-spacing: 0.1em;
-}
-
-.book-intro-btn {
-  pointer-events: auto;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #C3B7E2, #D8A7B1);
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(195, 183, 226, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.book-intro-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(195, 183, 226, 0.5);
-}
-
-.book-intro-btn:disabled {
-  opacity: 0.7;
-  cursor: default;
-}
 
 @keyframes bookContentFade {
   to {
@@ -1254,40 +1140,6 @@ body {
   }
 }
 
-/* CONFETTIS PASTEL */
-
-.confetti-layer {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background-image:
-    radial-gradient(circle at 10% -5%, rgba(247, 176, 208, 0.95) 0, transparent 55%),
-    radial-gradient(circle at 40% -10%, rgba(195, 183, 226, 0.95) 0, transparent 55%),
-    radial-gradient(circle at 70% 0%, rgba(246, 230, 236, 0.95) 0, transparent 55%),
-    radial-gradient(circle at 20% 40%, rgba(216, 167, 177, 0.9) 0, transparent 55%),
-    radial-gradient(circle at 80% 45%, rgba(195, 183, 226, 0.9) 0, transparent 55%);
-  background-size: 180% 180%;
-  animation: confettiFall 4s ease-out forwards;
-}
-
-@keyframes confettiFall {
-  0% {
-    opacity: 0;
-    transform: translateY(-40px);
-    background-position: 50% 0%;
-  }
-  15% {
-    opacity: 1;
-    transform: translateY(0);
-    background-position: 50% 30%;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(60px);
-    background-position: 50% 100%;
-  }
-}
 
 /* Flèche suivante */
 
@@ -1307,23 +1159,6 @@ body {
 .next-arrow:hover {
   opacity: 1;
   transform: translateX(-50%) translateY(2px);
-}
-
-/* INTRO RESPONSIVE */
-@media (max-width: 600px) {
-  .book-cover {
-    width: 320px;
-    height: 240px;
-  }
-
-  .book-intro-title {
-    font-size: 1.4rem;
-    letter-spacing: 0.15em;
-  }
-
-  .book-intro-subtitle {
-    font-size: 0.9rem;
-  }
 }
 
 /* RESPONSIVE */
