@@ -66,8 +66,76 @@ const sections = [
     ),
   },
   {
-    id: "ressens",
+    id: "voyages",
     title: "Chapitre 3",
+    subtitle: "Nos voyages et expériences",
+    image: galleryPhoto8,
+    imageAlt: "Nos voyages ensemble",
+    layout: "left",
+    content: (
+      <div className="timeline timeline-horizontal">
+        <div className="timeline-item">
+          <h3>✈️ L'Ardèche</h3>
+          <p>Notre premier grand voyage ensemble. Des paysages à couper le souffle, des rires, des moments simples et cette sensation que tout était à sa place.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🏍️ Le quad</h3>
+          <p>En vrai le quad c'est vachement bien. Une aventure pleine d'adrénaline et de rires partagés.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🌆 Rotterdam</h3>
+          <p>Découvrir une nouvelle ville ensemble, ses rues, son ambiance unique.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🏖️ Vacances Bretagne</h3>
+          <p>Les vacances en Bretagne, entre mer et terre, des moments de détente précieux.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🦁 Zoo de Beauval</h3>
+          <p>Admirer les animaux ensemble, partager notre amour pour la nature.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🌲 Forêt de Brocéliande</h3>
+          <p>Se perdre dans les légendes et la magie de cette forêt mystique.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🏰 Puy du Fou</h3>
+          <p>Vivre l'histoire ensemble, des spectacles époustouflants et des émotions partagées.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🎮 Match Valorant</h3>
+          <p>Partager nos passions, même les plus geek, et s'amuser ensemble.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🎵 Concert Fredz</h3>
+          <p>Vibrer ensemble sur la musique, créer des souvenirs sonores inoubliables.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🐼 Zoo PairiDaiza</h3>
+          <p>Une journée magique parmi les animaux, découvrir le monde ensemble.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🏛️ Bruges</h3>
+          <p>Flâner dans les rues de cette belle ville, prendre le temps de profiter.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🏰 Château de Chambord</h3>
+          <p>Explorer l'histoire de France ensemble, s'émerveiller devant tant de beauté.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>🌊 Narbonne</h3>
+          <p>Découvrir le sud de la France, ses plages et son charme méditerranéen.</p>
+        </div>
+        <div className="timeline-item">
+          <h3>⛪ Abbaye de Fontfroide</h3>
+          <p>Un moment de paix et de sérénité dans ce lieu chargé d'histoire.</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "ressens",
+    title: "Chapitre 4",
     subtitle: "Ce que je ressens",
     image: "/images/ce-que-je-ressens.jpg",
     imageAlt: "Un moment calme et doux à deux",
@@ -88,7 +156,7 @@ const sections = [
   },
   {
     id: "avenir",
-    title: "Chapitre 4",
+    title: "Chapitre 5",
     subtitle: "Et la suite…",
     image: "/images/notre-futur.jpg",
     imageAlt: "Une photo qui symbolise notre futur ensemble",
@@ -255,6 +323,7 @@ function App() {
           <button onClick={() => scrollToSection("hero")}>Début</button>
           <button onClick={() => scrollToSection("rencontre")}>Rencontre</button>
           <button onClick={() => scrollToSection("vecu")}>Nos moments</button>
+          <button onClick={() => scrollToSection("voyages")}>Nos voyages</button>
           <button onClick={() => scrollToSection("ressens")}>
             Ce que je ressens
           </button>

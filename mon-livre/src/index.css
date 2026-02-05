@@ -162,8 +162,10 @@ body {
   align-items: center;
   justify-content: space-between;
   backdrop-filter: blur(12px);
-  background: rgba(246, 230, 236, 0.55);
+  background: rgba(246, 230, 236, 0.75);
   border-bottom: 1px solid rgba(58, 58, 58, 0.08);
+  height: 60px;
+  box-sizing: border-box;
 }
 
 .top-nav .logo {
@@ -263,12 +265,35 @@ body {
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
-  padding-top: 70px;
+  padding-top: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(216, 167, 177, 0.6) rgba(246, 230, 236, 0.3);
+}
+
+/* Scrollbar personnalisée pour .book */
+.book::-webkit-scrollbar {
+  width: 10px;
+}
+
+.book::-webkit-scrollbar-track {
+  background: rgba(246, 230, 236, 0.3);
+  border-radius: 10px;
+}
+
+.book::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(216, 167, 177, 0.7), rgba(195, 183, 226, 0.7));
+  border-radius: 10px;
+  border: 2px solid rgba(246, 230, 236, 0.3);
+}
+
+.book::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(216, 167, 177, 0.9), rgba(195, 183, 226, 0.9));
 }
 
 .page {
   scroll-snap-align: start;
-  min-height: calc(100vh - 70px);
+  scroll-snap-stop: always;
+  height: 100vh;
   max-width: var(--max);
   width: 100%;
   margin: 0 auto;
@@ -279,6 +304,12 @@ body {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  box-sizing: border-box;
+}
+
+#galerie.page {
+  max-width: 100%;
+  padding: 20px 16px;
 }
 
 .final-page {
@@ -311,10 +342,17 @@ body {
   border-radius: var(--radius);
   border: 1px solid rgba(230, 220, 245, 0.5);
   box-shadow: 0 8px 32px rgba(180, 160, 200, 0.15);
-  padding: 40px 36px 38px;
+  padding: 60px 36px 40px;
   position: relative;
   backdrop-filter: blur(8px);
   transition: var(--transition);
+  height: fit-content;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  overflow-x: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Exception pour la section finale - doit être après la règle générale */
@@ -682,6 +720,124 @@ body {
   background: rgba(252, 248, 255, 1);
 }
 
+/* TIMELINE HORIZONTALE */
+.timeline-horizontal {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 20px 0 30px 0;
+  margin-top: 0;
+  padding-left: 0;
+  gap: 20px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(216, 167, 177, 0.5) transparent;
+}
+
+.timeline-horizontal::before {
+  display: none;
+}
+
+.timeline-horizontal::after {
+  content: "";
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.timeline-horizontal .timeline-item {
+  flex: 0 0 280px;
+  min-width: 280px;
+  max-width: 280px;
+  margin-bottom: 0;
+  margin-right: 0;
+  padding: 16px 18px;
+  scroll-snap-align: start;
+  position: relative;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s ease;
+}
+
+.page-visible .timeline-horizontal .timeline-item {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-horizontal .timeline-item::before {
+  display: none;
+}
+
+.timeline-horizontal .timeline-item h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.timeline-horizontal .timeline-item p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.timeline-horizontal .timeline-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(180, 160, 200, 0.2);
+}
+
+/* Scrollbar pour timeline horizontale */
+.timeline-horizontal::-webkit-scrollbar {
+  height: 6px;
+}
+
+.timeline-horizontal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timeline-horizontal::-webkit-scrollbar-thumb {
+  background: rgba(216, 167, 177, 0.5);
+  border-radius: 10px;
+}
+
+.timeline-horizontal::-webkit-scrollbar-thumb:hover {
+  background: rgba(216, 167, 177, 0.7);
+}
+
+/* Section voyages - permettre le scroll horizontal */
+.section-voyages .page-inner {
+  overflow-x: visible;
+  overflow-y: auto;
+  max-width: 1400px !important;
+  width: 100%;
+}
+
+.section-voyages .page-content {
+  overflow-x: visible;
+  width: 100%;
+}
+
+.section-voyages .page-layout {
+  display: block;
+}
+
+.section-voyages .page-photo {
+  display: none;
+}
+
+.section-voyages .page-text::before {
+  display: none;
+}
+
+.section-voyages .page-content {
+  text-align: center;
+  padding-left: 0;
+}
+
+#voyages.page {
+  max-width: 100%;
+  padding: 20px 16px;
+}
+
 /* FEELINGS & FUTURE */
 
 .feelings p {
@@ -709,6 +865,39 @@ body {
 
 .gallery-inner {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.gallery-inner .page-header {
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.gallery-inner .page-header h1 {
+  font-size: 1.5rem;
+}
+
+.gallery-inner .page-header h2 {
+  font-size: 0.9rem;
+}
+
+/* Optimisation de l'espace pour la galerie */
+#galerie .page-inner {
+  padding: 30px 32px 20px !important;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 120px) !important;
+  height: calc(100vh - 120px) !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 1400px !important;
+  width: 100%;
 }
 
 .gallery-grid {
@@ -1165,7 +1354,12 @@ body {
 
 @media (max-width: 820px) {
   .page-inner {
-    padding: 24px 20px 26px;
+    padding: 50px 20px 30px;
+    max-height: calc(100vh - 60px);
+  }
+  
+  .page {
+    height: 100vh;
   }
 
   .page-inner.final-inner {
@@ -1217,6 +1411,29 @@ body {
 
   .gallery-grid {
     gap: 14px;
+  }
+  
+  .gallery-inner {
+    max-height: calc(100vh - 240px);
+  }
+  
+  #galerie .page-inner {
+    max-width: 100% !important;
+    padding: 25px 16px 16px !important;
+    max-height: calc(100vh - 100px) !important;
+    height: calc(100vh - 100px) !important;
+  }
+  
+  #galerie.page {
+    padding: 15px 8px;
+  }
+  
+  .section-voyages .page-inner {
+    max-width: 100% !important;
+  }
+  
+  #voyages.page {
+    padding: 32px 16px;
   }
 }
 
