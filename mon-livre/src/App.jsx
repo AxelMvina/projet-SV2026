@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 import riverTrack from "./assets/music/River - Leon Bridges (Acoustic Karaoke).mp3";
+import introMusic from "./assets/photo/universfield-cinematic-orchestral-intro-351349.mp3";
 import introVideo from "./assets/photo/2026-02-04T17-01-10_la_couverture_du_watermarked.mp4";
 import finalVideo from "./assets/photo/Snapchat-1683045232.mp4";
 import firstMeetingPhoto from "./assets/photo/Snapchat-1183039470.jpg";
@@ -242,6 +243,24 @@ function App() {
     setShowFinalVideo(true);
   };
 
+  // Gestion musique d'intro
+  useEffect(() => {
+    const introAudio = document.getElementById("intro-music");
+    if (!introAudio) return;
+
+    if (showIntro) {
+      introAudio.volume = 0.5;
+      introAudio
+        .play()
+        .catch(() => {
+          // Si le navigateur bloque l'autoplay, on ignore
+        });
+    } else {
+      introAudio.pause();
+      introAudio.currentTime = 0;
+    }
+  }, [showIntro]);
+
   // Gestion musique (OFF par défaut) avec volume
   useEffect(() => {
     const audio = document.getElementById("bg-music");
@@ -303,6 +322,7 @@ function App() {
             playsInline
             onEnded={() => setVideoEnded(true)}
           />
+          <audio id="intro-music" src={introMusic} loop />
           {videoEnded && (
             <button
               type="button"
