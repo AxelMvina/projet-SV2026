@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import riverTrack from "./assets/music/River - Leon Bridges (Acoustic Karaoke).mp3";
+import riverTrack from "./assets/photo/Depuis le 16 décembre.wav";
 import introMusic from "./assets/photo/universfield-cinematic-orchestral-intro-351349.mp3";
 import introVideo from "./assets/photo/2026-02-04T17-01-10_la_couverture_du_watermarked.mp4";
 import finalVideo from "./assets/photo/Snapchat-1683045232.mp4";
@@ -191,11 +191,34 @@ function App() {
   const [noButtonGone, setNoButtonGone] = useState(false);
   const [noButtonReturning, setNoButtonReturning] = useState(false);
   const [runAwayDirection, setRunAwayDirection] = useState({ x: 140, y: -90 });
+  const [noButtonText, setNoButtonText] = useState("Non");
+  
+  const noSynonyms = [
+    "Allez dis oui",
+    "Clique sur l'autre",
+    "Tu sais que tu veux",
+    "L'autre bouton est mieux",
+    "L'autre c'est mieux",
+    "Tu hésites ?",
+    "Allez, oui !",
+    "L'autre bouton t'attend",
+    "Dis oui",
+    "Clique sur Évidemment",
+    "Tu veux vraiment dire non ?",
+    "L'autre est plus sympa",
+    "Allez, dis oui !",
+  ];
 
-  // Faire réapparaître le bouton "Non" après 3 secondes
+  // Faire réapparaître le bouton "Non" après 3 secondes avec un nouveau synonyme
   useEffect(() => {
     if (noButtonGone && !answerGiven) {
       const timer = setTimeout(() => {
+        // Choisir un synonyme aléatoire différent du texte actuel
+        setNoButtonText((currentText) => {
+          const availableSynonyms = noSynonyms.filter(syn => syn !== currentText);
+          return availableSynonyms[Math.floor(Math.random() * availableSynonyms.length)] || noSynonyms[0];
+        });
+        
         setNoButtonGone(false);
         setNoButtonReturning(true);
         // Réinitialiser l'animation après qu'elle soit terminée
@@ -711,7 +734,7 @@ function App() {
                       : {}
                   }
                 >
-                  Non
+                  {noButtonText}
                 </button>
               </div>
               {answerGiven && (
