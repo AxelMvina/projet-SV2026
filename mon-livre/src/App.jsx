@@ -244,28 +244,98 @@ function App() {
     setShowFinalVideo(true);
   };
 
-  // Gestion musique d'intro - démarre avec la vidéo ou au premier clic
-  const startIntroMusic = () => {
-    if (musicStarted) return;
-    const introAudio = document.getElementById("intro-music");
-    if (introAudio) {
-      introAudio.volume = 0.5;
-      introAudio.play()
-        .then(() => {
-          setMusicStarted(true);
-        })
-        .catch(() => {
-          // Si le navigateur bloque, on ignore
-        });
+  // Tentative de démarrage automatique de la musique
+  useEffect(() => {
+    if (!showIntro) return;
+    
+    const startIntroMusic = () => {
+      if (musicStarted) return;
+      const introAudio = document.getElementById("intro-music");
+      if (introAudio) {
+        introAudio.volume = 0.5;
+        introAudio.play()
+          .then(() => {
+            setMusicStarted(true);
+          })
+          .catch(() => {
+            // Si le navigateur bloque, on ignore
+          });
+      }
+    };
+    
+    // Essayer immédiatement après le montage
+    const timer1 = setTimeout(() => {
+      startIntroMusic();
+    }, 200);
+
+    // Essayer après un court délai
+    const timer2 = setTimeout(() => {
+      startIntroMusic();
+    }, 800);
+
+    // Essayer après 1.5 secondes
+    const timer3 = setTimeout(() => {
+      startIntroMusic();
+    }, 1500);
+
+    // Essayer quand la vidéo est prête ou joue
+    const video = document.querySelector(".video-intro-player");
+    const handleCanPlay = () => {
+      startIntroMusic();
+    };
+    
+    const handlePlaying = () => {
+      startIntroMusic();
+    };
+    
+    const handleLoadedData = () => {
+      startIntroMusic();
+    };
+    
+    if (video) {
+      video.addEventListener("canplay", handleCanPlay);
+      video.addEventListener("playing", handlePlaying);
+      video.addEventListener("loadeddata", handleLoadedData);
+    }
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      if (video) {
+        video.removeEventListener("canplay", handleCanPlay);
+        video.removeEventListener("playing", handlePlaying);
+        video.removeEventListener("loadeddata", handleLoadedData);
+      }
+    };
+  }, [showIntro]);
+
+  const handleVideoPlay = () => {
+    if (!musicStarted) {
+      const introAudio = document.getElementById("intro-music");
+      if (introAudio) {
+        introAudio.volume = 0.5;
+        introAudio.play()
+          .then(() => {
+            setMusicStarted(true);
+          })
+          .catch(() => {});
+      }
     }
   };
 
-  const handleVideoPlay = () => {
-    startIntroMusic();
-  };
-
   const handleIntroClick = () => {
-    startIntroMusic();
+    if (!musicStarted) {
+      const introAudio = document.getElementById("intro-music");
+      if (introAudio) {
+        introAudio.volume = 0.5;
+        introAudio.play()
+          .then(() => {
+            setMusicStarted(true);
+          })
+          .catch(() => {});
+      }
+    }
   };
 
   useEffect(() => {
@@ -275,6 +345,9 @@ function App() {
         introAudio.pause();
         introAudio.currentTime = 0;
       }
+      setMusicStarted(false);
+    } else {
+      // Réinitialiser l'état quand l'intro réapparaît
       setMusicStarted(false);
     }
   }, [showIntro]);
@@ -341,7 +414,7 @@ function App() {
             onPlay={handleVideoPlay}
             onEnded={() => setVideoEnded(true)}
           />
-          <audio id="intro-music" src={introMusic} loop />
+          <audio id="intro-music" src={introMusic} loop autoPlay />
           {videoEnded && (
             <button
               type="button"
