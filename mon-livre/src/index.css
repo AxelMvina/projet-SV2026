@@ -41,6 +41,49 @@ body {
   min-height: 100vh;
 }
 
+/* PRE-INTRO – Bouton initial */
+.pre-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.pre-intro-btn {
+  padding: 18px 48px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  font-family: var(--font-title);
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: linear-gradient(135deg, #C3B7E2, #D8A7B1);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(195, 183, 226, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: preIntroBtnFade 0.8s ease-out;
+}
+
+.pre-intro-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(195, 183, 226, 0.6);
+}
+
+@keyframes preIntroBtnFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* INTRO – Vidéo plein écran */
 .video-intro {
   position: fixed;

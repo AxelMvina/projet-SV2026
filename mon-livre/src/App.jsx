@@ -180,7 +180,8 @@ const sections = [
 ];
 
 function App() {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showPreIntro, setShowPreIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [musicStarted, setMusicStarted] = useState(false);
   const [galleryModal, setGalleryModal] = useState(null);
@@ -244,9 +245,9 @@ function App() {
     setShowFinalVideo(true);
   };
 
-  // Tentative de démarrage automatique de la musique
+  // Démarrage de la musique quand l'intro commence (après interaction utilisateur)
   useEffect(() => {
-    if (!showIntro) return;
+    if (!showIntro || musicStarted) return;
     
     const startIntroMusic = () => {
       if (musicStarted) return;
@@ -263,49 +264,25 @@ function App() {
       }
     };
     
-    // Essayer immédiatement après le montage
-    const timer1 = setTimeout(() => {
+    // Démarrer immédiatement après l'interaction utilisateur
+    const timer = setTimeout(() => {
       startIntroMusic();
-    }, 200);
+    }, 100);
 
-    // Essayer après un court délai
-    const timer2 = setTimeout(() => {
-      startIntroMusic();
-    }, 800);
-
-    // Essayer après 1.5 secondes
-    const timer3 = setTimeout(() => {
-      startIntroMusic();
-    }, 1500);
-
-    // Essayer quand la vidéo est prête ou joue
+    // Backup : essayer quand la vidéo joue
     const video = document.querySelector(".video-intro-player");
-    const handleCanPlay = () => {
-      startIntroMusic();
-    };
-    
     const handlePlaying = () => {
       startIntroMusic();
     };
     
-    const handleLoadedData = () => {
-      startIntroMusic();
-    };
-    
     if (video) {
-      video.addEventListener("canplay", handleCanPlay);
       video.addEventListener("playing", handlePlaying);
-      video.addEventListener("loadeddata", handleLoadedData);
     }
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      clearTimeout(timer);
       if (video) {
-        video.removeEventListener("canplay", handleCanPlay);
         video.removeEventListener("playing", handlePlaying);
-        video.removeEventListener("loadeddata", handleLoadedData);
       }
     };
   }, [showIntro]);
@@ -338,19 +315,33 @@ function App() {
     }
   };
 
+  const startIntro = () => {
+    setShowPreIntro(false);
+    setShowIntro(true);
+    // Démarrer la musique immédiatement après l'interaction utilisateur
+    setTimeout(() => {
+      const introAudio = document.getElementById("intro-music");
+      if (introAudio) {
+        introAudio.volume = 0.5;
+        introAudio.play()
+          .then(() => {
+            setMusicStarted(true);
+          })
+          .catch(() => {});
+      }
+    }, 100);
+  };
+
   useEffect(() => {
-    if (!showIntro) {
+    if (!showIntro && !showPreIntro) {
       const introAudio = document.getElementById("intro-music");
       if (introAudio) {
         introAudio.pause();
         introAudio.currentTime = 0;
       }
       setMusicStarted(false);
-    } else {
-      // Réinitialiser l'état quand l'intro réapparaît
-      setMusicStarted(false);
     }
-  }, [showIntro]);
+  }, [showIntro, showPreIntro]);
 
   // Gestion musique (OFF par défaut) avec volume
   useEffect(() => {
@@ -402,6 +393,19 @@ function App() {
 
   return (
     <div className="app-root">
+      {/* BOUTON INITIAL - Avant l'intro */}
+      {showPreIntro && (
+        <div className="pre-intro">
+          <button
+            type="button"
+            className="pre-intro-btn"
+            onClick={startIntro}
+          >
+            Commencer
+          </button>
+        </div>
+      )}
+
       {/* INTRO – Vidéo plein écran */}
       {showIntro && (
         <div className="video-intro" onClick={handleIntroClick}>
@@ -414,7 +418,7 @@ function App() {
             onPlay={handleVideoPlay}
             onEnded={() => setVideoEnded(true)}
           />
-          <audio id="intro-music" src={introMusic} loop autoPlay />
+          <audio id="intro-music" src={introMusic} loop />
           {videoEnded && (
             <button
               type="button"
