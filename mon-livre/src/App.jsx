@@ -182,6 +182,7 @@ const sections = [
 function App() {
   const [showIntro, setShowIntro] = useState(true);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [musicStarted, setMusicStarted] = useState(false);
   const [galleryModal, setGalleryModal] = useState(null);
   const [secretOpen, setSecretOpen] = useState(false);
   const [answerGiven, setAnswerGiven] = useState(false);
@@ -243,21 +244,38 @@ function App() {
     setShowFinalVideo(true);
   };
 
-  // Gestion musique d'intro
-  useEffect(() => {
+  // Gestion musique d'intro - démarre avec la vidéo ou au premier clic
+  const startIntroMusic = () => {
+    if (musicStarted) return;
     const introAudio = document.getElementById("intro-music");
-    if (!introAudio) return;
-
-    if (showIntro) {
+    if (introAudio) {
       introAudio.volume = 0.5;
-      introAudio
-        .play()
+      introAudio.play()
+        .then(() => {
+          setMusicStarted(true);
+        })
         .catch(() => {
-          // Si le navigateur bloque l'autoplay, on ignore
+          // Si le navigateur bloque, on ignore
         });
-    } else {
-      introAudio.pause();
-      introAudio.currentTime = 0;
+    }
+  };
+
+  const handleVideoPlay = () => {
+    startIntroMusic();
+  };
+
+  const handleIntroClick = () => {
+    startIntroMusic();
+  };
+
+  useEffect(() => {
+    if (!showIntro) {
+      const introAudio = document.getElementById("intro-music");
+      if (introAudio) {
+        introAudio.pause();
+        introAudio.currentTime = 0;
+      }
+      setMusicStarted(false);
     }
   }, [showIntro]);
 
@@ -313,13 +331,14 @@ function App() {
     <div className="app-root">
       {/* INTRO – Vidéo plein écran */}
       {showIntro && (
-        <div className="video-intro">
+        <div className="video-intro" onClick={handleIntroClick}>
           <video
             className="video-intro-player"
             src={introVideo}
             autoPlay
             muted
             playsInline
+            onPlay={handleVideoPlay}
             onEnded={() => setVideoEnded(true)}
           />
           <audio id="intro-music" src={introMusic} loop />
